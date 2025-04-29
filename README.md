@@ -87,7 +87,14 @@ config.put("targetDefaultCase", "upper");
 ### 示例1：转换ALTER语句
 
 ```java
-String sql = "ALTER TABLE `test`.`employees` DROP COLUMN `phone`;";
+String sql = "CREATE TABLE `test`.`employees` (\n" +
+        "    `id` INT PRIMARY KEY AUTO_INCREMENT COMMENT '员工唯一ID',\n" +
+        "    `Name` VARCHAR(50) NOT NULL COMMENT '员工姓名',\n" +
+        "    `department` VARCHAR(50) DEFAULT '未分配' COMMENT '所属部门',\n" +
+        "    `saLary` DECIMAL(10,2) NOT NULL DEFAULT 0 COMMENT '工资',\n" +
+        "    `hire_Date` DATE DEFAULT (CURRENT_DATE) COMMENT '入职日期',\n" +
+        "    `eMail` VARCHAR(100) COMMENT '邮箱（允许空）'\n" +
+        ") COMMENT '员工信息表';";
 HashMap<String, String> config = new HashMap<>();
 config.put("caseSensitive", "false");
 
@@ -96,12 +103,28 @@ List<String> converted = SQLConverter.convertSql(
     DataBaseType.MYSQL, 
     DataBaseType.ORACLE, 
     "DXP", 
-    "EMPLOYEES", 
+    "LGY_TEST_SOURCE", 
     config
 );
 
 // 输出结果示例：
-// ALTER TABLE DXP.EMPLOYEES DROP COLUMN PHONE;
+CREATE TABLE "DXP"."LGY_TEST_SOURCE" (
+  "ID" INT NOT NULL,
+"NAME" VARCHAR2(50)  NOT NULL,
+"DEPARTMENT" VARCHAR2(50)  DEFAULT '未分配',
+"SALARY" NUMBER(10,2) DEFAULT 0 NOT NULL,
+"HIRE_DATE" DATE DEFAULT CURRENT_DATE,
+"EMAIL" VARCHAR2(100) , 
+PRIMARY KEY ("ID")
+ );
+
+COMMENT ON TABLE "DXP"."LGY_TEST_SOURCE" IS '员工信息表';
+COMMENT ON COLUMN "DXP"."LGY_TEST_SOURCE"."ID" IS '员工唯一ID';
+COMMENT ON COLUMN "DXP"."LGY_TEST_SOURCE"."NAME" IS '员工姓名';
+COMMENT ON COLUMN "DXP"."LGY_TEST_SOURCE"."DEPARTMENT" IS '所属部门';
+COMMENT ON COLUMN "DXP"."LGY_TEST_SOURCE"."SALARY" IS '工资';
+COMMENT ON COLUMN "DXP"."LGY_TEST_SOURCE"."HIRE_DATE" IS '入职日期';
+COMMENT ON COLUMN "DXP"."LGY_TEST_SOURCE"."EMAIL" IS '邮箱（允许空）';
 ```
 
 ### 示例2：识别SQL类型
