@@ -84,7 +84,7 @@ config.put("targetDefaultCase", "upper");
 
 ## 使用示例
 
-### 示例1：转换ALTER语句
+### 示例1：转换CREATE语句
 
 ```java
 String sql = "CREATE TABLE `test`.`employees` (\n" +
